@@ -3,8 +3,22 @@ import GitHub from 'next-auth/providers/github'
 import Google from 'next-auth/providers/google'
 import connectMongoDB from './libs/mongodb'
 import User from './models/user'
+
+// 디버깅: 환경변수로부터 GitHub 클라이언트 ID가 제대로 읽히는지 확인
+console.log('GITHUB_ID from env:', process.env.GITHUB_ID)
+
+const githubProvider = GitHub({
+  clientId: process.env.GITHUB_ID!,
+  clientSecret: process.env.GITHUB_SECRET!,
+})
+
+const googleProvider = Google({
+  clientId: process.env.GOOGLE_ID!,
+  clientSecret: process.env.GOOGLE_SECRET!,
+})
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google, GitHub],
+  providers: [googleProvider, githubProvider],
   pages: {
     signIn: '/login',
   },
